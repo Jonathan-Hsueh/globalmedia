@@ -1,1 +1,1 @@
-# GlobalMedia
+# globalmedia
