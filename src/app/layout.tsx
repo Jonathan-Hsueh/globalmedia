@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { SWRConfig } from 'swr';
+
 import Navbar from "./components/navbar";
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,6 +13,18 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+
+export function SWRProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <SWRConfig value={{
+      refreshInterval: 300000, // 5 minute refresh
+      revalidateOnFocus: false
+    }}>
+      {children}
+    </SWRConfig>
+  );
+}
 
 export const metadata: Metadata = {
   title: "Create Next App",

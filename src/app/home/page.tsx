@@ -1,7 +1,7 @@
 'use client'
 import BackgroundComponent from "../components/background";
 import { PageContent } from "../components/pagecontent";
-
+import PoliticalTimeline from "../components/politicaltimeline";
 
 export default function Home() {
   return (
@@ -102,10 +102,10 @@ export default function Home() {
           </div>
         </div>
 
-      </div>
+      </div> 
+      <PoliticalTimeline/>
+      
       <div className="h-screen bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('images/background2.png')" }}>
-      
-      
       </div>
     </PageContent>
   );
