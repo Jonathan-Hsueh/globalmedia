@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import useSWR from 'swr';
 
 type TimelineEvent = {
@@ -16,13 +16,28 @@ const NEWS_API_URL = `https://newsapi.org/v2/everything?q=trump&pageSize=15&apiK
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const transformNewsData = (articles: any[]): TimelineEvent[] => {
+type NewsAPIArticle = {
+  source: {
+    id: string | null;
+    name: string;
+  };
+  author: string | null;
+  title: string;
+  description: string | null;
+  url: string;
+  urlToImage: string | null;
+  publishedAt: string;
+  content: string | null;
+};
+
+// Update the transformNewsData function signature
+const transformNewsData = (articles: NewsAPIArticle[]): TimelineEvent[] => {
   return articles.map((article) => ({
     date: article.publishedAt,
     title: article.title,
     excerpt: article.description || '',
     url: article.url,
-    popularity: Math.random(), // Placeholder for popularity
+    popularity: Math.random(),
   }));
 };
 

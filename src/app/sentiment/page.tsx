@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, Variants, Transition } from 'framer-motion';
 import { PageContent } from '../components/pagecontent';
 
@@ -73,21 +73,22 @@ function Sentiment() {
       setPage(currentPage);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch posts');
+      console.log(error);
       setPosts([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
     fetchSubredditPosts(subreddit, false);
-  };
-
+  }, [subreddit, page]); // Add all used variables here
+  
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [page]);
+  }, [handleScroll]); // Now safe to include in dependencies
 
   return (
     <PageContent>

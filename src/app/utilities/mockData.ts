@@ -1,7 +1,6 @@
 // generate-mock-data.ts
 import { writeFileSync } from 'fs';
 import { format, addDays } from 'date-fns';
-import path from 'path';
 
 interface MockDataConfig {
   entries?: number;
