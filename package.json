@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@tailwindcss/line-clamp": "^0.4.4",
+    "@types/lodash": "^4.17.15",
     "chart.js": "^4.4.8",
+    "date-fns": "^4.1.0",
+    "lodash": "^4.17.21",
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-chartjs-2": "^5.3.0",

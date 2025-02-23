@@ -2,7 +2,7 @@
 import BackgroundComponent from "../components/background";
 import { PageContent } from "../components/pagecontent";
 import PoliticalTimeline from "../components/politicaltimeline";
-
+import HistogramGraph from "../components/histogram";
 export default function Home() {
   return (
     <PageContent>
@@ -106,6 +106,7 @@ export default function Home() {
       <PoliticalTimeline/>
       
       <div className="h-screen bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('images/background2.png')" }}>
+       <HistogramGraph/>
       </div>
     </PageContent>
   );

@@ -50,6 +50,8 @@ function Sentiment() {
   };
 
   return (
+    <div className="h-screen bg-cover bg-center bg-no-repeat relative" >
+    
     <div className="container mx-auto p-4">
       <PageContent>
         <div className="mb-8">
@@ -101,6 +103,7 @@ function Sentiment() {
           </div>
         </div>
       </PageContent>
+    </div>
     </div>
   );
 }
