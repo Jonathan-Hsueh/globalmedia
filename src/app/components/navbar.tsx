@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import IconLink from "./IconLink";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -20,10 +21,17 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Left section: Logo and Navigation Links */}
+          
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              {/* Your logo or brand */}
+              {/* Your logo or brand */}    
             </div>
+            <IconLink
+                href="/about"
+                imageSrc="/images/globalmedialogo.png"
+                altText="Global Media"
+                size={50}
+                ></IconLink>
             <div className="hidden md:block font-bold">
               <div className="ml-10 flex items-baseline space-x-4">
                 {tabs.map((tab) => {
@@ -39,7 +47,12 @@ const Navbar = () => {
           </div>
           {/* Right section: Search input */}
           <div className="flex items-center">
-            
+            <IconLink
+            href="https://github.com/Jonathan-Hsueh/globalmedia"
+            imageSrc="/images/github-icon.png"
+            altText="GitHub"
+            size={30}
+            />
           </div>
         </div>
       </div>

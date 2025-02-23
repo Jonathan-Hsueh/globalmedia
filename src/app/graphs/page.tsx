@@ -1,7 +1,7 @@
 'use client'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement, LineElement, ArcElement } from 'chart.js';
 import { Line, Bar, Pie } from 'react-chartjs-2';
-
+import { PageContent } from '../components/pagecontent';
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -88,6 +88,7 @@ function GraphsPage() {
   };
 
   return (
+    <PageContent>
     <div className="p-8 max-w-7xl mx-auto bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
         Sentiment Analysis Dashboard
@@ -130,6 +131,7 @@ function GraphsPage() {
         ))}
       </div>
     </div>
+    </PageContent> 
   );
 }
 
