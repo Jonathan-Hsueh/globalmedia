@@ -105,8 +105,10 @@ export default function Home() {
       </div> 
       <PoliticalTimeline/>
       
-      <div className="h-screen bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('images/background2.png')" }}>
+      <div className="h-screen bg-cover bg-center bg-no-repeat relative" style={{ backgroundImage: "url('images/trumpcorona.png')" }}>
+      <a href="/graphs"> 
        <HistogramGraph/>
+      </a>
       </div>
     </PageContent>
   );

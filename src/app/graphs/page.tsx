@@ -258,40 +258,43 @@ function GraphsPage() {
   return (
     <PageContent>
       <div className="p-8 max-w-7xl mx-auto bg-gray-50 min-h-screen">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+        <h1 className="text-3xl font-bold text-gray-700 mb-8 text-center">
           Sentiment Analysis Dashboard
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="bg-white p-6 rounded-xl shadow-sm">
-            <h3 className="text-lg font-semibold mb-4">Sentiment Trend</h3>
-            <div className="h-80">
+            <h3 className="text-gray-700 text-lg font-semibold mb-4">Sentiment Trend</h3>
+            <div className="h-full">
               <Line data={lineData} options={lineChartOptions} />
             </div>
           </div>
 
           <div className="bg-white p-6 rounded-xl shadow-sm">
-            <h3 className="text-lg font-semibold mb-4">Sentiment Distribution</h3>
+            <h3 className="text-gray-700 text-lg font-semibold mb-4">Sentiment Distribution</h3>
             <div className="h-80">
               <Pie data={pieData} options={pieChartOptions} />
             </div>
           </div>
-
+            
+            {/* Third graph: Bar chart */}
           <div className="col-span-full bg-white p-6 rounded-xl shadow-sm">
-            <h3 className="text-lg font-semibold mb-4">Comparative Analysis</h3>
-            <div className="h-96">
+            <h3 className="text-gray-700 text-lg font-semibold mb-4">Comparative Analysis</h3>
+            <div className="flex justify-center items-center h-full w-full">
               <Bar data={barData} options={barChartOptions} />
             </div>
           </div>
 
           {/* Fourth graph: Histogram with curve */}
           <div className="col-span-full bg-white p-6 rounded-xl shadow-sm mt-6">
-            <h3 className="text-lg font-semibold mb-4">Sentiment Histogram</h3>
-            <div className="h-96">
+            <h3 className="text-gray-700 text-lg font-semibold mb-4">Sentiment Histogram</h3>
+            <div className="flex justify-center items-center h-full w-full">
               <Bar data={histogramData} options={histogramOptions} />
             </div>
           </div>
+
         </div>
+ 
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
           {[
