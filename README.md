@@ -6,7 +6,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
 ![Chart.js](https://img.shields.io/badge/Chart.js-4.4.8-ff6384)
 
-A modern, responsive dashboard for analyzing global media sentiment using advanced data visualization techniques. Built with Next.js, TypeScript, and Chart.js.
+A modern, responsive dashboard for analyzing global media sentiment using advanced data visualization techniques, analyzing public reactions to United States Presidential Executive Actions. Built with Next.js, TypeScript, and Chart.js.
 
 ## 🌟 Features
 
