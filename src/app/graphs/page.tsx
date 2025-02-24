@@ -14,7 +14,15 @@ import {
 } from 'chart.js';
 import { Line, Bar, Pie } from 'react-chartjs-2';
 import { PageContent } from '../components/pagecontent';
+import { 
+  LineChartData, 
+  BarChartData, 
+  PieChartData, 
+  SentimentMetrics, 
+  RedditDataPoint 
+} from '@/app/types';
 
+// Register ChartJS components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -31,21 +39,26 @@ const sentimentColors = {
   positive: 'rgba(101, 116, 255, 0.8)',
   negative: 'rgba(255, 99, 132, 0.8)',
   neutral: 'rgba(75, 192, 192, 0.8)'
-};
-
-interface ChartData {
-  date: string;
-  upvotes: number;
-  sentiment: number;
-  month: string;
-}
+} as const;
 
 function GraphsPage() {
-  const [lineData, setLineData] = useState<any>({ labels: [], datasets: [] });
-  const [pieData, setPieData] = useState<any>({ labels: [], datasets: [] });
-  const [barData, setBarData] = useState<any>({ labels: [], datasets: [] });
-  const [histogramData, setHistogramData] = useState<any>({ labels: [], datasets: [] });
-  const [metrics, setMetrics] = useState({
+  const [lineData, setLineData] = useState<LineChartData>({ 
+    labels: [], 
+    datasets: [] 
+  });
+  const [pieData, setPieData] = useState<PieChartData>({ 
+    labels: [], 
+    datasets: [] 
+  });
+  const [barData, setBarData] = useState<BarChartData>({ 
+    labels: [], 
+    datasets: [] 
+  });
+  const [histogramData, setHistogramData] = useState<BarChartData>({ 
+    labels: [], 
+    datasets: [] 
+  });
+  const [metrics, setMetrics] = useState<SentimentMetrics>({
     averageSentiment: 0,
     positivePercentage: 0,
     totalUpvotes: 0
@@ -58,7 +71,7 @@ function GraphsPage() {
         const text = await response.text();
         const lines = text.split('\n');
         
-        const parsedData: ChartData[] = [];
+        const parsedData: RedditDataPoint[] = [];
         for (let i = 1; i < lines.length; i++) {
           const line = lines[i].trim();
           if (line) {
@@ -102,26 +115,11 @@ function GraphsPage() {
         const positivePercentage = (positive / parsedData.length) * 100;
         const totalUpvotes = parsedData.reduce((sum, curr) => sum + curr.upvotes, 0);
 
-        // Create histogram bins for sentiment distribution
-        const numBins = 20;
-        const binWidth = 2 / numBins; // Since sentiment ranges from -1 to 1 (total range = 2)
-        const bins = new Array(numBins).fill(0);
-        parsedData.forEach(d => {
-          let binIndex = Math.floor((d.sentiment + 1) / binWidth);
-          if (binIndex >= numBins) binIndex = numBins - 1;
-          bins[binIndex] += 1;
-        });
-        // Generate labels for each bin using midpoints
-        const histogramLabels = bins.map((_, i) => {
-          const lower = -1 + i * binWidth;
-          const midpoint = lower + binWidth / 2;
-          return midpoint.toFixed(1);
-        });
-
-        // Update state for all charts
+        // Update state for line chart
         setLineData({
           labels: months,
           datasets: [{
+            type: 'line',
             label: 'Average Sentiment',
             data: monthlyAverages,
             borderColor: sentimentColors.positive,
@@ -132,9 +130,11 @@ function GraphsPage() {
           }]
         });
 
+        // Update state for pie chart
         setPieData({
           labels: ['Positive', 'Negative', 'Neutral'],
           datasets: [{
+            type: 'pie',
             data: [positive, negative, neutral],
             backgroundColor: [
               sentimentColors.positive,
@@ -142,28 +142,48 @@ function GraphsPage() {
               sentimentColors.neutral
             ],
             borderWidth: 0,
-            hoverOffset: 10
+            hoverOffset: 10,
+            label: 'Sentiment Distribution'
           }]
         });
 
+        // Update state for bar chart
         setBarData({
           labels: months,
           datasets: [
             {
+              type: 'bar',
               label: 'Positive Sentiment Upvotes',
               data: positiveUpvotes,
-              backgroundColor: 'rgba(101, 116, 255, 0.8)',
+              backgroundColor: sentimentColors.positive,
               borderRadius: 6
             },
             {
+              type: 'bar',
               label: 'Negative Sentiment Upvotes',
               data: negativeUpvotes,
-              backgroundColor: 'rgba(255, 99, 132, 0.8)',
+              backgroundColor: sentimentColors.negative,
               borderRadius: 6
             }
           ]
         });
 
+        // Create histogram bins
+        const numBins = 20;
+        const binWidth = 2 / numBins;
+        const bins = new Array(numBins).fill(0);
+        parsedData.forEach(d => {
+          let binIndex = Math.floor((d.sentiment + 1) / binWidth);
+          if (binIndex >= numBins) binIndex = numBins - 1;
+          bins[binIndex] += 1;
+        });
+
+        const histogramLabels = bins.map((_, i) => {
+          const lower = -1 + i * binWidth;
+          return `${lower.toFixed(1)} - ${(lower + binWidth).toFixed(1)}`;
+        });
+
+        // Update state for histogram
         setHistogramData({
           labels: histogramLabels,
           datasets: [
@@ -173,15 +193,6 @@ function GraphsPage() {
               data: bins,
               backgroundColor: 'rgba(75, 192, 192, 0.8)',
               borderWidth: 1,
-            },
-            {
-              type: 'line',
-              label: 'Density Curve',
-              data: bins,
-              borderColor: 'rgba(75, 192, 192, 1)',
-              tension: 0.4,
-              fill: false,
-              pointRadius: 0,
             }
           ]
         });
@@ -192,8 +203,8 @@ function GraphsPage() {
           totalUpvotes
         });
 
-      } catch (error) {
-        console.error('Error fetching or parsing data:', error);
+      } catch (err) {
+        console.error('Error fetching or parsing data:', err);
       }
     };
 
@@ -240,21 +251,6 @@ function GraphsPage() {
     }
   };
 
-  const histogramOptions = {
-    responsive: true,
-    plugins: {
-      legend: { position: 'top' as const },
-      title: { display: false }
-    },
-    scales: {
-      y: {
-        grid: { color: 'rgba(0,0,0,0.05)' },
-        beginAtZero: true
-      },
-      x: { grid: { display: false } }
-    }
-  };
-
   return (
     <PageContent>
       <div className="p-8 max-w-7xl mx-auto bg-gray-50 min-h-screen">
@@ -277,7 +273,6 @@ function GraphsPage() {
             </div>
           </div>
             
-            {/* Third graph: Bar chart */}
           <div className="col-span-full bg-white p-6 rounded-xl shadow-sm">
             <h3 className="text-gray-700 text-lg font-semibold mb-4">Comparative Analysis</h3>
             <div className="flex justify-center items-center h-full w-full">
@@ -285,16 +280,13 @@ function GraphsPage() {
             </div>
           </div>
 
-          {/* Fourth graph: Histogram with curve */}
           <div className="col-span-full bg-white p-6 rounded-xl shadow-sm mt-6">
             <h3 className="text-gray-700 text-lg font-semibold mb-4">Sentiment Histogram</h3>
             <div className="flex justify-center items-center h-full w-full">
-              <Bar data={histogramData} options={histogramOptions} />
+              <Bar data={histogramData} options={barChartOptions} />
             </div>
           </div>
-
         </div>
- 
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
           {[

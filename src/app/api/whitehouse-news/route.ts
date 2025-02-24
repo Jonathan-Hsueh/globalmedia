@@ -1,16 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { WhiteHousePost, EnhancedWhiteHousePost } from '@/app/types';
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse
-    ) {
+    res: NextApiResponse<EnhancedWhiteHousePost[] | { error: string }>
+) {
     try {
         const response = await fetch(
-        "https://www.whitehouse.gov/wp-json/wp/v2/posts?per_page=10"
+            "https://www.whitehouse.gov/wp-json/wp/v2/posts?per_page=10"
         );
-        const posts = await response.json();
+        const posts: WhiteHousePost[] = await response.json();
     
-        const enhancedData = posts.map((post: any) => ({
+        const enhancedData: EnhancedWhiteHousePost[] = posts.map((post) => ({
             date: post.date,
             title: post.title.rendered,
             excerpt: post.excerpt.rendered,
@@ -22,7 +23,7 @@ export default async function handler(
         }));
         
         res.status(200).json(enhancedData);
-    } catch (error) {
+    } catch {
         res.status(500).json({ error: "Failed to fetch White House updates" });
     }
 }

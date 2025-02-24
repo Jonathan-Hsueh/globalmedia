@@ -80,15 +80,22 @@ export default function ScrollEffect() {
               style={{ transform: `scale(${scale})` }}
             >
               <h1 className="text-4xl font-bold mb-4 text-gray-800">
-                Revolution Through Time
+                Global Media Movement
               </h1>
               <div className="overflow-auto pr-4">
                 <p className="text-gray-600 text-lg leading-relaxed">
-                  A historical journey showcasing pivotal moments in social 
-                  movements. From the civil rights era to modern-day activism, 
-                  explore how grassroots efforts have shaped societies worldwide. 
-                  This collection highlights the power of collective action and 
-                  the enduring fight for justice and equality across generations.
+                  This is a picture of President Donald Trump&apos;s fist pump-moment   
+                  after the assassination attempt, overlayed with images from an  
+                  anti-Trump protest in New York. No matter what side of the political
+                  isle or where your opinions lie, it&apos;s become increasingly clear that   
+                  Donald Trump is a polarizing figure. The ideas of justice and 
+                  equality blur. How do people view the president? How do opinions 
+                  change in the face of groundbreaking legislation and the rise
+                  of political polarizations? This project is our attempt to 
+                  understand, &ldquo;Understanding is the bridge between confusion and clarity,&rdquo; 
+                  and to know the truth, a premium commodity in today&apos;s nation. 
+                  We must pop the bubble of comfortability and see the world for what it is.
+                  As Rodney King once said, &ldquo;Can we all get along?&rdquo; – Jonathan Hsueh
                 </p>
               </div>
             </div>

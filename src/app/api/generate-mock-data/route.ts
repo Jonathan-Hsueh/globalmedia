@@ -1,12 +1,17 @@
-// app/api/generate-mock-data/route.ts
 import { NextResponse } from 'next/server';
 import { generateMockData } from '@/app/utilities/mockData';
 import fs from 'fs';
 import path from 'path';
 
+interface RequestBody {
+  entries: string;
+  startDate: string;
+  outputFile: string;
+}
+
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    const body: RequestBody = await req.json();
     const { entries, startDate, outputFile } = body;
 
     // Validate input
@@ -42,22 +47,17 @@ export async function POST(req: Request) {
       filePath: outputFile
     });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Generation error:', error);
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: 500 }
+      );
+    }
     return NextResponse.json(
-      { error: error.message || 'Generation failed' },
+      { error: 'Generation failed' },
       { status: 500 }
     );
   }
 }
-/*
-curl command for testing: 
-
-curl -X POST http://localhost:3000/api/generate-mock-data \
-  -H "Content-Type: application/json" \
-  -d '{
-    "entries": 100,
-    "startDate": "2025-01-01",
-    "outputFile": "data/redditdata.csv"
-  }'
-*/ 

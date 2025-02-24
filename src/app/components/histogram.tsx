@@ -13,6 +13,7 @@ import {
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 import { PageContent } from '../components/pagecontent';
+import { ChartData, ChartDataset } from '@/app/types';
 
 ChartJS.register(
   CategoryScale,
@@ -26,7 +27,10 @@ ChartJS.register(
 );
 
 function HistogramGraph() {
-  const [histogramData, setHistogramData] = useState<any>({ labels: [], datasets: [] });
+  const [histogramData, setHistogramData] = useState<ChartData>({ 
+    labels: [], 
+    datasets: [] 
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,31 +78,33 @@ function HistogramGraph() {
           return `${lower.toFixed(1)} - ${(lower + binWidth).toFixed(1)}`;
         });
 
+        const datasets: ChartDataset[] = [
+          {
+            type: 'bar',
+            label: 'Frequency',
+            data: bins,
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+          },
+          {
+            type: 'line',
+            label: 'Normal Distribution',
+            data: curvePoints.map(p => p * scaleFactor),
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 2,
+            tension: 0.4,
+            fill: false,
+            pointRadius: 0,
+          }
+        ];
+
         setHistogramData({
           labels: histogramLabels,
-          datasets: [
-            {
-              type: 'bar',
-              label: 'Frequency',
-              data: bins,
-              backgroundColor: 'rgba(75, 192, 192, 0.6)',
-              borderColor: 'rgba(75, 192, 192, 1)',
-              borderWidth: 1,
-            },
-            {
-              type: 'line',
-              label: 'Normal Distribution',
-              data: curvePoints.map(p => p * scaleFactor),
-              borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 2,
-              tension: 0.4,
-              fill: false,
-              pointRadius: 0,
-            }
-          ]
+          datasets
         });
-      } catch (error) {
-        console.error('Error fetching or parsing data:', error);
+      } catch (err) {
+        console.error('Error fetching or parsing data:', err);
       }
     };
 
