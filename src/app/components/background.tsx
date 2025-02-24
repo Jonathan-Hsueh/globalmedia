@@ -6,17 +6,21 @@ import randomOutput from '../utilities/PlusOrMinus';
 interface BackgroundComponentProps {
   floatingImages: Array<{
     id: string;
-    image: string; // Use StaticImageData for imported images if needed
+    image: string;
     link: string;
     initialPosition: { x: string; y: string };
   }>;
 }
 
 const BackgroundComponent: React.FC<BackgroundComponentProps> = ({ floatingImages }) => {
+  // Add a safety check for undefined floatingImages
+  if (!floatingImages) {
+    return null; // or return a loading state or default content
+  }
+
   return (
     <div>
-      {floatingImages.map((floatingImage) => {
-        // Choose the animation name based on randomOutput
+      {Array.isArray(floatingImages) && floatingImages.map((floatingImage) => {
         const animationName = randomOutput() ? 'floatUp' : 'floatDown';
         return (
           <a

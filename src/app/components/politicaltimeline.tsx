@@ -10,12 +10,6 @@ type TimelineEvent = {
   popularity: number;
 };
 
-// Replace with your NewsAPI key
-const NEWS_API_KEY = 'b950f4a331314baa9be26a74e241008c';
-const NEWS_API_URL = `https://newsapi.org/v2/everything?q=trump&pageSize=15&apiKey=${NEWS_API_KEY}`;
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 type NewsAPIArticle = {
   source: {
     id: string | null;
@@ -30,31 +24,76 @@ type NewsAPIArticle = {
   content: string | null;
 };
 
-// Update the transformNewsData function signature
-const transformNewsData = (articles: NewsAPIArticle[]): TimelineEvent[] => {
+type NewsAPIResponse = {
+  status: string;
+  articles: NewsAPIArticle[];
+};
+
+// Use local API route instead of direct NewsAPI call
+const API_URL = '/api/news';
+
+// Updated fetcher with better error handling
+const fetcher = async (url: string): Promise<NewsAPIResponse> => {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch news data: ${response.statusText}`);
+    }
+    const data = await response.json();
+    
+    // Validate the response structure
+    if (!data || !Array.isArray(data.articles)) {
+      throw new Error('Invalid API response structure');
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Fetch error:', error);
+    throw error;
+  }
+};
+
+const transformNewsData = (articles: NewsAPIArticle[] | undefined): TimelineEvent[] => {
+  if (!articles || !Array.isArray(articles)) {
+    console.error('Invalid or missing articles data:', articles);
+    return [];
+  }
+
   return articles.map((article) => ({
-    date: article.publishedAt,
-    title: article.title,
+    date: article.publishedAt || new Date().toISOString(),
+    title: article.title || 'No Title',
     excerpt: article.description || '',
-    url: article.url,
-    popularity: Math.random(),
+    url: article.url || '#',
+    popularity: Math.random(), // Consider using a more meaningful metric
   }));
 };
 
 export default function PoliticalTimeline() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Fetch data and refresh every 24 hours (86400000 milliseconds)
-  const { data, error } = useSWR(NEWS_API_URL, fetcher, {
+  const { data, error, isLoading } = useSWR<NewsAPIResponse>(API_URL, fetcher, {
     refreshInterval: 86400000, // Refresh every 24 hours
-    revalidateOnFocus: false, // Don't refresh on window focus
+    revalidateOnFocus: false,
+    dedupingInterval: 3600000, // Dedupe requests within 1 hour
   });
 
-  const transformedData = data ? transformNewsData(data.articles) : [];
+  const transformedData = data?.articles ? transformNewsData(data.articles) : [];
+
+  const handleScrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+    }
+  };
+
+  const handleScrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+    }
+  };
 
   return (
     <section className="relative h-[600px] bg-gray-50 overflow-hidden isolate">
-      {/* Simplified USA Map Background */}
+      {/* Background SVG */}
       <svg
         viewBox="0 0 1200 800"
         className="absolute inset-0 z-0 opacity-10 pointer-events-none"
@@ -65,21 +104,32 @@ export default function PoliticalTimeline() {
           className="stroke-gray-300 fill-none"
           strokeWidth="2"
         />
-        {/* Add more path elements for state outlines */}
       </svg>
 
-      {/* Scrollable Timeline */}
+      {/* Timeline Container */}
       <div
         ref={scrollRef}
         className="flex h-full gap-8 px-8 pb-12 overflow-x-auto scroll-snap-x-mandatory snap-center"
       >
+        {/* Error State */}
         {error && (
           <div className="flex items-center justify-center w-full h-full">
-            <p className="text-red-500">Failed to load news updates</p>
+            <div className="text-center p-6 bg-red-50 rounded-lg">
+              <p className="text-red-600 font-medium">
+                {error.message || 'Failed to load news updates'}
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="mt-4 px-4 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors"
+              >
+                Try Again
+              </button>
+            </div>
           </div>
         )}
 
-        {!data && !error &&
+        {/* Loading State */}
+        {isLoading &&
           Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="flex-shrink-0 w-80 snap-center">
               <div className="h-full p-6 bg-white rounded-xl shadow-lg animate-pulse">
@@ -98,6 +148,7 @@ export default function PoliticalTimeline() {
             </div>
           ))}
 
+        {/* News Cards */}
         {transformedData.map((event) => (
           <article
             key={event.url}
@@ -119,7 +170,7 @@ export default function PoliticalTimeline() {
                 </span>
               </div>
 
-              <h3 className="mb-3 text-lg font-semibold text-gray-900">
+              <h3 className="mb-3 text-lg font-semibold text-gray-900 line-clamp-2">
                 {event.title}
               </h3>
 
@@ -165,21 +216,45 @@ export default function PoliticalTimeline() {
         ))}
       </div>
 
-
+      {/* Navigation Buttons */}
       <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-2 p-4">
         <button
-          onClick={() => scrollRef.current?.scrollBy({ left: -300, behavior: 'smooth' })}
-          className="p-2 text-gray-500 rounded-full hover:bg-gray-100"
+          onClick={handleScrollLeft}
+          className="p-2 text-gray-500 rounded-full hover:bg-gray-100 transition-colors"
           aria-label="Scroll left"
         >
-          ←
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
         </button>
         <button
-          onClick={() => scrollRef.current?.scrollBy({ left: 300, behavior: 'smooth' })}
-          className="p-2 text-gray-500 rounded-full hover:bg-gray-100"
+          onClick={handleScrollRight}
+          className="p-2 text-gray-500 rounded-full hover:bg-gray-100 transition-colors"
           aria-label="Scroll right"
         >
-          →
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
         </button>
       </div>
     </section>
