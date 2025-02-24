@@ -1,41 +1,138 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GlobalMedia Sentiment Analysis Dashboard 🌐📊
 
-## Getting Started
+![Last Updated](https://img.shields.io/badge/last%20updated-2025--02--24-blue)
+![Next.js](https://img.shields.io/badge/Next.js-15.1.7-black)
+![React](https://img.shields.io/badge/React-19.0.0-61dafb)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
+![Chart.js](https://img.shields.io/badge/Chart.js-4.4.8-ff6384)
 
-First, run the development server:
+A modern, responsive dashboard for analyzing global media sentiment using advanced data visualization techniques. Built with Next.js, TypeScript, and Chart.js.
+
+## 🌟 Features
+
+- **Real-time Sentiment Analysis** - Track sentiment trends across various media sources
+- **Interactive Visualizations** - Four distinct chart types for comprehensive data analysis:
+  - Line charts for temporal trend analysis
+  - Pie charts for sentiment distribution
+  - Bar charts for comparative analysis
+  - Histograms for statistical distribution
+- **Responsive Design** - Seamless experience across all device sizes
+- **Type-Safe Implementation** - Fully typed interfaces using TypeScript
+- **Modern Tech Stack** - Built with the latest versions of Next.js and React
+
+## 🚀 Quick Start
 
 ```bash
+# Clone the repository
+git clone https://github.com/Jonathan-Hsueh/globalmedia.git
+
+# Install dependencies
+npm install
+
+# Run the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000) to see the dashboard in action.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠 Technical Architecture
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Data Visualization Components
 
-## Learn More
+```typescript
+// Chart Data Interfaces
+interface ChartDataset {
+  type?: 'line' | 'bar' | 'pie';
+  label: string;
+  data: number[];
+  // ... styling properties
+}
 
-To learn more about Next.js, take a look at the following resources:
+interface ChartData {
+  labels: string[];
+  datasets: ChartDataset[];
+}
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Core Technologies
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Frontend Framework**: Next.js 15.1.7
+- **UI Library**: React 19.0.0
+- **Type System**: TypeScript 5
+- **Visualization**: Chart.js 4.4.8
+- **Styling**: TailwindCSS 3.4.1
+- **Animation**: Framer Motion 12.4.7
 
-## Deploy on Vercel
+## 📊 Visualization Types
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Sentiment Trend Analysis**
+   - Line chart tracking sentiment over time
+   - Customizable time ranges
+   - Interactive data points
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. **Sentiment Distribution**
+   - Pie chart showing proportion of sentiments
+   - Color-coded categories
+   - Hover effects for detailed information
 
-overall tech stach: 
-web pages: NextJS SSR Pages
-Styling: Tailwind CSS
-Backend: NextJS Api Routing
+3. **Comparative Analysis**
+   - Bar chart comparing different metrics
+   - Side-by-side comparison
+   - Customizable metrics
+
+4. **Statistical Distribution**
+   - Histogram showing sentiment frequency
+   - Normal distribution overlay
+   - Bin size customization
+
+## 💻 Development
+
+```bash
+# Run development server with Turbopack
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm run start
+
+# Run linting
+npm run lint
+```
+
+## 🎨 Design Philosophy
+
+Our visualization design follows these core principles:
+
+- **Clarity**: Clean, uncluttered representations of data
+- **Interactivity**: Responsive charts with hover states and animations
+- **Accessibility**: Color schemes chosen for readability and accessibility
+- **Responsiveness**: Adaptive layouts for all screen sizes
+- **Performance**: Optimized rendering and data handling
+
+## 📈 Data Processing Pipeline
+
+```mermaid
+graph LR
+    A[Raw Data] --> B[Data Parser]
+    B --> C[Statistical Analysis]
+    C --> D[Chart Generation]
+    D --> E[Interactive Display]
+```
+
+## 🙋‍♂️ Authors
+
+**Jonathan Hsueh** - [GitHub Profile](https://github.com/Jonathan-Hsueh)
+**Wavy Yang** - [GitHub Profile](https://github.com/Wavy77)
+**Chase Brewer** - [GitHub Profile](https://github.com/chasethecc)
+**Noah Ruderman** - [GitHub Profile](https://github.com/NoahTheCoolDude)
+**Gabe Kung** - [GitHub Profile](https://github.com/ieatyoursushi)
+
+---
+
+<div align="center">
+
+[![Made with ❤️ and TypeScript](https://img.shields.io/badge/Made%20with-%E2%9D%A4%EF%B8%8F%20and%20TypeScript-blue)](https://www.typescriptlang.org/)
+
+</div>
