@@ -14,9 +14,9 @@ type IndexType = 0 | 1 | 2 | 3 | 4;
 const roleMappings: Record<IndexType, string> = {
   0: 'Lead Designer',
   1: 'Backend Developer',
-  2: 'Data Scientist',
+  2: 'Data Scientist/Engineer',
   3: 'NLP Engineer',
-  4: 'Data Scientist'
+  4: 'Data Scientist/Engineer'
 };
 
 const linkMappings: Record<IndexType, string> = {
@@ -133,7 +133,7 @@ export default function ScrollEffect() {
                   </div>
                   <div>
                     <p className="font-medium">Archives</p>
-                    <p>12k+ hrs</p>
+                    <p>36+ hrs</p>
                   </div>
                 </div>
               </div>
