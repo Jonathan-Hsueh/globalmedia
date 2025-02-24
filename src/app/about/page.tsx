@@ -12,11 +12,11 @@ const TEAM_MEMBERS = [
 
 type IndexType = 0 | 1 | 2 | 3 | 4;
 const roleMappings: Record<IndexType, string> = {
-  0: 'Lead Archivist',
-  1: 'Digital Curator',
-  2: 'Media Strategist',
-  3: 'Visual Historian',
-  4: 'Founding Director'
+  0: 'Lead Designer',
+  1: 'Backend Developer',
+  2: 'Data Scientist',
+  3: 'NLP Engineer',
+  4: 'Data Scientist'
 };
 
 const linkMappings: Record<IndexType, string> = {
@@ -115,21 +115,21 @@ export default function ScrollEffect() {
           <div className="flex h-full gap-8">
             <div className="w-1/3 flex flex-col justify-center pr-8 border-r border-gray-200">
               <h2 className="text-3xl font-bold mb-6 text-[#2E5077]">
-                About Our Collective
+                About Our Team
               </h2>
               <p className="text-gray-600 leading-relaxed mb-6 text-lg">
-                We are a global network of visual storytellers and archival researchers 
-                dedicated to preserving the history of social movements.
+                We are a network of visual storytellers and archival researchers 
+                dedicated to understanding reality for what it really is.
               </p>
               <div className="mt-auto">
                 <div className="flex justify-between text-sm text-gray-500">
                   <div>
                     <p className="font-medium">Established</p>
-                    <p>2012</p>
+                    <p>2025</p>
                   </div>
                   <div>
                     <p className="font-medium">Members</p>
-                    <p>45+</p>
+                    <p>5+</p>
                   </div>
                   <div>
                     <p className="font-medium">Archives</p>
